@@ -12,6 +12,8 @@
 	body {
 	    font-family: monospace;
 		margin: 50px 25px;
+        <!-- background-color: #121212; -->
+        
 	}
 	#head {
 		position: fixed;
@@ -31,30 +33,30 @@
         max-width: 100px;
         border-radius: 5px;
         margin: 4px auto 6px auto;
-        border: 2px solid #b5d9ea;
         -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
         -webkit-box-shadow: rgba(0, 0, 0, 0.5) 1px 2px 1px; 
         -moz-box-shadow: rgba(0, 0, 0, 0.5) 1px 2px 1px;
-        background-color: #edf7ff;
-        background: -webkit-gradient(linear, left top, left bottom, from(#edf7ff), to(#cde7ee));
     }
-    .aboutRedline{
-        position: relative;
-        text-align: center;
-        vertical-align: middle;
-        font-weight:500;
-        font-size:10px;
-        max-width: 100px;
-        border-radius: 5px;
-        margin: 4px auto 6px auto;
+    .defaultBox {
+        border: 2px solid #b5e8ea;
+        background-color: #edfeff;
+        background: -webkit-gradient(linear, left top, left bottom, from(#edffff), to(#cdedee));
+    }
+    .redlineBox {
         border: 2px solid #eab5b5;
-        -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -webkit-box-shadow: rgba(0, 0, 0, 0.5) 1px 2px 1px; 
-        -moz-box-shadow: rgba(0, 0, 0, 0.5) 1px 2px 1px;
-        background-color: #edf7ff;
+        background-color: #ffeded;
         background: -webkit-gradient(linear, left top, left bottom, from(#ffeded), to(#eecdcd));
+    }
+    .activeBox {
+        border: 2px solid #b5eaba;
+        background-color: #edffed;
+        background: -webkit-gradient(linear, left top, left bottom, from(#eeffed), to(#cdeecd));
+    }
+    .cabBox {
+        border: 2px solid #d1b5ea;
+        background-color: #f4edff;
+        background: -webkit-gradient(linear, left top, left bottom, from(#f5edff), to(#dbcdee));
     }
     div.aboutmore:before {
         bottom: -21px;
@@ -64,6 +66,7 @@
         width: 2px;
         position: absolute;
         background: black;
+        opacity: 50%;
     }
     div.brother div.brother .about:after {
         top: -11px;
@@ -73,15 +76,7 @@
         width: 2px;
         position: absolute;
         background: black;
-    }
-    div.brother div.brother .aboutRedline:after {
-        top: -11px;
-        left: 50%;
-        content: " ";
-        height: 9px;
-        width: 2px;
-        position: absolute;
-        background: black;
+        opacity: 50%;
     }
     .brother {
         display: inline-table;
@@ -102,22 +97,29 @@
         width:100%;
     }
     div.brother div.brother div.connect > div.left, div.brother div.brother div.connect > div.right {
-        background: #000;
+        background: black;
         width:50%;
         height: 2px;
         content: ' ';
         display:inline-block;
+        opacity: 50%;
     }
     .little_brother > div.brother:first-child > div.connect > div.left {
-        background: #FFF;
+        /* Invisible spacing lines */
+        background: white;
     }
     .little_brother > div.brother:last-child > div.connect > div.right {
-        background: #FFF;
+        /* Invisible spacing lines */
+        background: white;
     }
     h1, h2, h3, h4, h5 {
         margin: 0px;
         padding: 0px;
 
+    }
+    .whiteText {
+        color: white;
+        opacity: 80%;
     }
     h6 {
         margin: 0px;
@@ -215,7 +217,7 @@
                 var name        = "null";
                 var nickname    = "null";
                 var show        = "TRUE";
-                var aboutClass  = "about";
+                var boxClass    = "defaultBox";
 
 				bond            = data[i].fields.BondNumber;
                 if ('BigBrother' in data[i].fields)
@@ -236,7 +238,15 @@
                 {
                     name = "REDLINE";
                     nickname = "N/A";
-                    aboutClass = "aboutRedline";
+                    boxClass = "redlineBox";
+                }
+                else if (data[i].fields.Status == "Active")
+                {
+                    boxClass = "activeBox";
+                }
+                else if (data[i].fields.Status == "CAB")
+                {
+                    boxClass = "cabBox"
                 }
 				
 				if( /^[0-9]+$/i.test(bond) ){
@@ -247,10 +257,10 @@
 					}					
 					to.append('<div class="brother" bond=' + bond + '>'							
 							+ '<div class="connect"><div class="left"></div><div class="right"></div></div>'
-							+ '<div class="' + aboutClass + '">'
+							+ '<div class="about ' + boxClass + '">'
 							+ '<h2>' + bond + '</h2>'
 						    + '<b>' + name + '</b>' 
-						    + '<br/>' + nickname + '</div>'
+						    + '<br/><div>' + nickname + '</div></div>'
 							+ '<div class="little_brother"></div></div>');
 				}
 			}
@@ -324,4 +334,3 @@
     	<div id="head" style="color: #FFF; text-shadow: 0 0 2px #000;">Find: <input id="findbond" type="text" width="50px" /> &nbsp;&nbsp; <span></span><input type="button" style="float:right; margin-right: 10px;" onclick="showAll();" value="Show All" />&nbsp;&nbsp;<input type="button" onclick="location.href='http://dztl.net/tree-old.htm';" style="float:right; margin-right: 10px;" value="Old (Ancient) Tree" />&nbsp;&nbsp;<input type="button" onclick="location.href='http://dztl.net/tree.htm';" style="float:right; margin-right: 10px;" value="Collins' Boomer Tree" />&nbsp;&nbsp;<input type="button" onclick="location.href='https://airtable.com/shrdJHpBBREpJk8NH';" style="float:right; margin-right: 10px;" value="Airtable DB" /><h6  style="float:right; margin-right: 10px; vertical-align: bottom;">Currently maintained by 341. Data is pulled from Airtable DB.</h6></div>
 	</body> 
 </html>
-
